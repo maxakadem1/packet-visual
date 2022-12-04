@@ -1,0 +1,46 @@
+/*========================================
+    Component custom styles
+  =======================================*/
+
+.uiOverlay{
+    position: absolute;
+    z-index: 100001;
+}
+
+.centerDisplay{
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+
+.fileMenu{
+    top: 2vh;
+    left: 1vw;
+    height: 6em;
+    width: 30vw;
+    background-color: mediumaquamarine;
+}
+
+.graphView{
+    top: 1vh;
+    right: 2vw;
+    height: max-content;
+    width: max-content;
+    text-align: center;
+}
+
+.graphDisplay{
+    height: 11em;
+    width: 11em;
+    background-color: white;
+    margin: 1.5em 0 1.5em 0;
+    box-shadow: 3px 3px 8px rgba(0,0,0,0.3);
+}
+
+.playbackMenu{
+    bottom: 2vh;
+    left: 1vw;
+    height: 5em;
+    width: 50vw;
+    background-color: darkslateblue;
+}

@@ -5,6 +5,10 @@ import Map from './Map';
 import { FlyToInterpolator } from 'react-map-gl';
 import { csv } from 'd3';
 
+import FileMenu from "./components/FileMenu";
+import GraphView from "./components/GraphView";
+import Playback from "./components/Playback";
+
 const App = () => {
   const [viewState, setViewState] = React.useState(Locations.usa);
   const handleChangeViewState = ({ viewState }) => setViewState(viewState);
@@ -38,6 +42,12 @@ const App = () => {
 
   return (
     <div>
+      {/* USER CONTROLS */}
+      <FileMenu />
+      <GraphView />
+      <Playback />
+
+      {/* WORLD MAP */}
       <Map
         width="100vw"
         height="100vh"

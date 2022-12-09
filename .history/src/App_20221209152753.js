@@ -22,27 +22,29 @@ const App = () => {
 
   const [libraries, setLibraries] = React.useState([]);
 
-  React.useEffect(() => {
-    csv("/data/public_libraries.csv", (d, id) => ({
-      id,
-      state: d["State"],
-      position: [+d["Longitude"], +d["Latitude"]],
-    }))
-      .then((libraries) =>
-        libraries.filter((d) => d.position[0] != null && d.position[1] != null)
-      )
-      .then(setLibraries);
-  }, []);
+  // React.useEffect(() => {
+  //   csv("/data/public_libraries.csv", (d, id) => ({
+  //     id,
+  //     state: d["State"],
+  //     position: [+d["Longitude"], +d["Latitude"]],
+  //   }))
+  //     .then((libraries) =>
+  //       libraries.filter((d) => d.position[0] != null && d.position[1] != null)
+  //     )
+  //     .then(setLibraries);
+  // }, []);
 
   // extract data from lounge_dat.json file
-  // React.useEffect(() => {
-  //   fetch("/data/lounge_dat.json")
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       setLibraries(data);
-  //     });
-  // }, []);
+  React.useEffect(() => {
+    fetch("/data/lounge_dat.json")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setLibraries(data);
+      });
+  }, []);
+
+  console.log(libraries);
 
   const [radius, setRadius] = React.useState(15);
   const handleToggleRadius = () =>

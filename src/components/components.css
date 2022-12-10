@@ -4,15 +4,8 @@
 
 #overlays{
     position: absolute;
-    z-index: 100001;
-    height: 100vh;
+    z-index: 99999;
     width: 100vw;
-}
-
-.stabilize{
-    position: relative;
-    height: inherit;
-    width: inherit;
 }
 
 .uiOverlay{
@@ -70,7 +63,7 @@
 }
 
 .playbackMenu{
-    bottom: 4vh;
+    top: 80vh;
     left: 2vw;
     height: 5em;
     width: max-content;

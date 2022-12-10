@@ -8,6 +8,9 @@ import { lineString } from "@turf/helpers";
 
 import ArcBrushingLayer from "./goodies/ArcBrushingLayer";
 
+import { useRecoilValue } from 'recoil';
+import { incomingPacket } from './components/stores';
+
 function SvgOverlayExample({ libraries, radius }) {
   const redraw = ({ project }) => {
     return (
@@ -52,13 +55,25 @@ export default function Map({
     return pairs(shuffle(libraries.slice()).slice(0, 100));
   }, [libraries]);
 
+  // Contains all packet data to pass to DeckGL
+  const packetData = useRecoilValue(incomingPacket);
+
   return (
+    
     <MapGL
       width={width}
       height={height}
       viewState={viewState}
       onViewStateChange={onViewStateChange}
     >
+      {/* Temporary print */}
+      <h4 style={{ transform: "translate(60vw, 0)" }}>Incoming packet!</h4>
+      <ol style={{ transform: "translate(60vw, 0)" }}>
+          <li>Source IP: {packetData.sourceIP}</li>
+          <li>Dest IP: {packetData.destIP}</li>
+          <li>Source Location: LAT {packetData.sourceLat} , LONG {packetData.sourceLong}</li>
+          <li>Dest Location: LAT {packetData.destLat} , LONG {packetData.destLong}</li>
+      </ol>
       <Spring to={{ arcCoef: arcsEnabled ? 1 : 1e-10 }}>
         {(springProps) => {
           const layers = [

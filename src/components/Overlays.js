@@ -13,11 +13,9 @@ export default function Overlays() {
 
   return (
     <div id="overlays">
-        <div class="stabilize">
-            <FileMenu />
-            <GraphView showGraphs={playbackDone} />
-            <Playback />
-        </div>
+        <FileMenu />
+        <GraphView showGraphs={playbackDone} />
+        <Playback />
     </div>
   );
 }

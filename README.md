@@ -1,4 +1,4 @@
-## Demo of using maps with React
+## Wireshark Data Visualisation using React with Mapbox, DeckGL and Bootstrap
 
 This demo uses [react-map-gl](https://uber.github.io/react-map-gl) and [deck.gl](https://deck.gl) to render Mapbox maps with different layers on top.
 

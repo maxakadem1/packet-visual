@@ -1,19 +1,19 @@
-import React from 'react';
-import MapGL, { SVGOverlay } from 'react-map-gl';
-import { DeckGL, ScatterplotLayer, GeoJsonLayer, ArcLayer } from 'deck.gl';
-import { Spring } from 'react-spring/renderprops';
-import Goo from './goodies/Goo';
-import { easeBackOut, pairs, shuffle } from 'd3';
-import { lineString } from '@turf/helpers';
+import React from "react";
+import MapGL, { SVGOverlay } from "react-map-gl";
+import { DeckGL, ScatterplotLayer, GeoJsonLayer, ArcLayer } from "deck.gl";
+import { Spring } from "react-spring/renderprops";
+import Goo from "./goodies/Goo";
+import { easeBackOut, pairs, shuffle } from "d3";
+import { lineString } from "@turf/helpers";
 
-import ArcBrushingLayer from './goodies/ArcBrushingLayer';
+import ArcBrushingLayer from "./goodies/ArcBrushingLayer";
 
 function SvgOverlayExample({ libraries, radius }) {
   const redraw = ({ project }) => {
     return (
       <g>
         <Goo>
-          {libraries.map(lib => {
+          {libraries.map((lib) => {
             const [x, y] = project(lib.position);
             return (
               <circle key={lib.id} cx={x} cy={y} r={radius} fill="tomato" />
@@ -36,13 +36,15 @@ export default function Map({
   arcsEnabled,
 }) {
   const librariesMass = React.useMemo(
-    () => libraries.filter(d => d.state === 'MA'),
+    () => libraries.filter((d) => d.state === "MA"),
     [libraries]
   );
 
   const librariesLine = React.useMemo(
     () =>
-      libraries.length ? lineString(libraries.map(d => d.position)) : undefined,
+      libraries.length
+        ? lineString(libraries.map((d) => d.position))
+        : undefined,
     [libraries]
   );
 
@@ -58,10 +60,10 @@ export default function Map({
       onViewStateChange={onViewStateChange}
     >
       <Spring to={{ arcCoef: arcsEnabled ? 1 : 1e-10 }}>
-        {springProps => {
+        {(springProps) => {
           const layers = [
             new ScatterplotLayer({
-              id: 'scatterplot-layer',
+              id: "scatterplot-layer",
               data: libraries,
               getRadius: 500 * radius,
               radiusMaxPixels: 15,
@@ -73,21 +75,21 @@ export default function Map({
                 },
               },
               pickable: true,
-              onClick: info => console.log(info.object),
+              onClick: (info) => console.log(info.object),
               autoHighlight: true,
             }),
             new GeoJsonLayer({
-              id: 'geojson-layer',
+              id: "geojson-layer",
               data: librariesLine,
               lineWidthMinPixels: 1,
               getLineColor: [0, 0, 0, 20],
             }),
 
             new ArcBrushingLayer({
-              id: 'arc-layer',
+              id: "arc-layer",
               data: libraryLinks,
-              getSourcePosition: d => d[0].position,
-              getTargetPosition: d => d[1].position,
+              getSourcePosition: (d) => d[0].position,
+              getTargetPosition: (d) => d[1].position,
               getSourceColor: [0, 255, 0],
               getTargetColor: [0, 200, 200],
               getWidth: 3,

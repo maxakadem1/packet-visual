@@ -1,7 +1,6 @@
 import { atom, selector } from 'recoil';
 
-
-// Check if file load is successful
+// isFileLoaded: Check if file load is successful
 const isFileLoaded = atom({
   key: 'isFileLoaded',
   default: false,
@@ -12,7 +11,7 @@ const loaded = selector({
 });
 
 
-// Check if Playback is finished
+// isPlaybackDone: Check if Playback is finished
 const isPlaybackDone = atom({
   key: 'isPlaybackDone',
   default: false,
@@ -23,7 +22,7 @@ const done = selector({
 });
 
 
-// Watch for new packet data
+// sendPacket: Watch for new packet data
 const sendPacket = atom({
   key: 'sendPacket',
   default: { 

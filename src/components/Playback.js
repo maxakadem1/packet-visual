@@ -16,16 +16,27 @@ export default function Playback({visible=true}){
   })
 
   // Sample dispatch times
-  // To replace with actual packet time intervals converted to milliseconds
+  // TODO: replace with actual packet time intervals converted to milliseconds
   let times = [1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000]
   let currFrame = 0
   const [time, setTime] = useState("00:00:00:00")
   let playTime = 0
   let totalTime = 0
 
+
   const [done, setDone] = useRecoilState(isPlaybackDone)
-  const setPlaybackDone = () => { setDone(true) }
+  /* setPlaybackDone
+   *    Notify application if playback is finished (true) or starting (false)
+   *    @params: Boolean
+   */
+  const setPlaybackDone = (bool) => { setDone(bool) }
+
+
   const [incomingPacket, setPacket] = useRecoilState(sendPacket)
+  /* setThePacket
+   *    Load data to be dispatched to the map
+   *    @params: Object<Packet>
+   */
   const setThePacket = (thePacket) => { 
     setPacket({
       "sourceIP": thePacket["source_ip"],
@@ -37,10 +48,18 @@ export default function Playback({visible=true}){
     })
   }
 
-  // Set playback durations
+
+  /* play
+   *    Run the Playback component from the beginning on button click
+   */
   const play = () => {
+    // Hide graphs when replaying
+    setPlaybackDone(false)
+    
+    // Get end duration
     totalTime = times[times.length-1]+100
 
+    // Load packet time intervals
     let pid = setInterval(loadContent, 100)
     function loadContent() {
       if (playTime < totalTime){
@@ -53,12 +72,16 @@ export default function Playback({visible=true}){
         setTime(formatTime(playTime))
       }
       else {
-        showResults()
+        end()
         clearInterval(pid)
       }
     }
   }
 
+  /* formatTime
+   *    Helper function to format time from milliseconds to hh:mm:ss:mm display in UI
+   *    @params: Number
+   */
   function formatTime(milliseconds) {
     var hours = Math.floor(milliseconds / 3600000);
     milliseconds = milliseconds % 3600000;
@@ -69,12 +92,15 @@ export default function Playback({visible=true}){
     return hours.toString(10).padStart(2, "0") + ":" + minutes.toString(10).padStart(2, "0") + ":" + seconds.toString(10).padStart(2, "0") + ":" + Math.round(milliseconds / 10).toString(10).padStart(2, "0")
   }
 
-  function showResults(){
-    setPlaybackDone()
+  /* end
+   *    End playback by resetting time and variables to defaults
+   */
+  function end(){
+    setPlaybackDone(true)
     playTime = 0
     totalTime = 0
     currFrame = -1
-    setTime("00:00:00:00  -   ANIMATION COMPLETE")
+    setTime("00:00:00:00 - ANIMATION COMPLETE")
   }
 
   return (

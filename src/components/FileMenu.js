@@ -2,15 +2,29 @@ import React from 'react';
 import "./components.css";
 import { useState } from "react"
 import Form from 'react-bootstrap/Form';
+import { useRecoilState } from "recoil"
+import { isFileLoaded, loaded } from "./stores"
 
 export default function FileMenu() {
+
+  const [loaded, setLoaded] = useRecoilState(isFileLoaded)
+  /* setFileLoadSuccess
+   *    Notify application if file load is successful
+   */
+  const setFileLoadSuccess = () => { setLoaded(true) }
+
+  // Text to be shown in FileMenu bar
   const[statusText, changeStatus] = useState("No file uploaded")
 
+  /* loadFile
+   *    Manage new file intake
+   */
   const loadFile = (e) => {
     const file = e.target.files[0]
     let fn = file.name
     let extension = fn.split('.').pop()
     if(extension == "pcapng"){
+      setFileLoadSuccess()
       changeStatus("READY → " + fn)
     }
     else {

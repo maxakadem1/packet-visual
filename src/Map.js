@@ -66,7 +66,7 @@ export default function Map({
       viewState={viewState}
       onViewStateChange={onViewStateChange}
     >
-      {/* Temporary print */}
+      {/* TEMPORARILY print raw data on the map */}
       <h4 style={{ transform: "translate(60vw, 0)" }}>Incoming packet!</h4>
       <ol style={{ transform: "translate(60vw, 0)" }}>
           <li>Source IP: {packetData.sourceIP}</li>

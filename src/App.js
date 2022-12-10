@@ -5,9 +5,12 @@ import Map from './Map';
 import { FlyToInterpolator } from 'react-map-gl';
 import { csv } from 'd3';
 
-import FileMenu from "./components/FileMenu";
-import GraphView from "./components/GraphView";
-import Playback from "./components/Playback";
+// import FileMenu from "./components/FileMenu";
+// import GraphView from "./components/GraphView";
+// import Playback from "./components/Playback";
+import Overlays from './components/Overlays';
+
+import { RecoilRoot } from 'recoil';
 
 const App = () => {
   const [viewState, setViewState] = React.useState(Locations.usa);
@@ -42,30 +45,30 @@ const App = () => {
 
   return (
     <div>
-      {/* USER CONTROLS */}
-      <FileMenu />
-      <GraphView />
-      <Playback />
+      <RecoilRoot>
+        {/* USER CONTROLS */}
+        <Overlays />
 
-      {/* WORLD MAP */}
-      <Map
-        width="100vw"
-        height="100vh"
-        viewState={viewState}
-        onViewStateChange={handleChangeViewState}
-        libraries={libraries}
-        radius={radius}
-        arcsEnabled={arcsEnabled}
-      />
-      <div className={styles.controls}>
-        <button onClick={handleToggleRadius}>Radius</button>
-        <button onClick={handleToggleArcs}>Arcs</button>
-        {Object.keys(Locations).map(key => (
-          <button key={key} onClick={() => handleFlyTo(Locations[key])}>
-            {key}
-          </button>
-        ))}
-      </div>
+        {/* WORLD MAP */}
+        <Map
+          width="100vw"
+          height="100vh"
+          viewState={viewState}
+          onViewStateChange={handleChangeViewState}
+          libraries={libraries}
+          radius={radius}
+          arcsEnabled={arcsEnabled}
+        />
+        <div className={styles.controls}>
+          <button onClick={handleToggleRadius}>Radius</button>
+          <button onClick={handleToggleArcs}>Arcs</button>
+          {Object.keys(Locations).map(key => (
+            <button key={key} onClick={() => handleFlyTo(Locations[key])}>
+              {key}
+            </button>
+          ))}
+        </div>
+      </RecoilRoot>
     </div>
   );
 };

@@ -7,23 +7,35 @@ import { isPlaybackDone, done, sendPacket, incomingPacket } from "./stores"
 export default function Playback({visible=true}){
 
   let packets = []
-
-  // Fetch JSON packet data
-  fetch("/data/lounge_dat.json")
-  .then((response) => response.json())
-  .then((data) => {
-    packets = data
-  })
-
-  // Sample dispatch times
-  // TODO: replace with actual packet time intervals converted to milliseconds
-  let times = [1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000]
-  let currFrame = 0
-  const [time, setTime] = useState("00:00:00:00")
   let playTime = 0
   let totalTime = 0
+  let times = []
+  let currFrame = 0
 
+  // Set packet upper bound to 50
+  let maxPackets = 50
 
+  // Fetch JSON packet data
+  fetch("/data/UM_Center_Capture.json")
+  .then((response) => response.json())
+  .then((data) => {
+    packets = Object.values(data)
+
+    // Get time intervals
+    let start = parseFloat(packets[0]["timestamp"])
+
+    let timestamps = packets.map(p => parseFloat(p["timestamp"]))
+    for (let t of timestamps) {
+      let diff = Math.round((t-start)*1000)
+      times.push(diff)
+    }
+
+    times = times.slice(0,maxPackets)
+
+    totalTime = times[times.length-1]+100
+  })
+  
+  const [time, setTime] = useState("00:00:00:00")
   const [done, setDone] = useRecoilState(isPlaybackDone)
   /* setPlaybackDone
    *    Notify application if playback is finished (true) or starting (false)
@@ -55,16 +67,13 @@ export default function Playback({visible=true}){
   const play = () => {
     // Hide graphs when replaying
     setPlaybackDone(false)
-    
-    // Get end duration
-    totalTime = times[times.length-1]+100
 
     // Load packet time intervals
     let pid = setInterval(loadContent, 100)
     function loadContent() {
       if (playTime < totalTime){
         if(playTime >= times[currFrame]){
-          setThePacket(packets[currFrame.toString()])
+          setThePacket(packets[currFrame])
           currFrame++
         }
         

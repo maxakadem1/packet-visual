@@ -13,7 +13,7 @@ const loaded = selector({
 // setPacketDataFile: Return the URL of the JSON parsed data from the .pcapng file
 const setPacketDataFile = atom({
   key: 'setPacketDataFile',
-  default: '/data/UM_Center_Capture.json', // Stub data file
+  default: '/data/lounge_dat.json', // Stub data file
 });
 const pData = selector({
   key: 'pData',

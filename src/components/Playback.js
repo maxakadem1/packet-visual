@@ -20,6 +20,7 @@ export default function Playback({visible=true, dataUrl=null}){
     .then ((response) => response.json())
     .then ((data) => {
       packets = Object.values(data)
+      packets = packets.slice(0, Math.min(packets.length, maxPackets))
 
       // Get time intervals
       let start = parseFloat(packets[0]["timestamp"])
@@ -30,7 +31,6 @@ export default function Playback({visible=true, dataUrl=null}){
         times.push(diff)
       }
       
-      times = times.slice(0,maxPackets)
       totalTime = times[times.length-1]+100
     })
     .catch (function() {

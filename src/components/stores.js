@@ -35,9 +35,7 @@ const done = selector({
 // sendPacket: Watch for new packet data
 const sendPacket = atom({
   key: 'sendPacket',
-  default: { 
-    time: 0
-  },
+  default: null,
 });
 const incomingPacket = selector({
   key: 'incomingPacket',

@@ -3,7 +3,6 @@ import styles from "./App.module.css";
 import * as Locations from "./locations";
 import Map from "./Map";
 import { FlyToInterpolator } from "react-map-gl";
-import { csv } from "d3";
 
 import Overlays from "./components/Overlays";
 
@@ -19,30 +18,6 @@ const App = () => {
       transitionDuration: 2000,
       transitionInterpolator: new FlyToInterpolator(),
     });
-
-  const [libraries, setLibraries] = React.useState([]);
-
-  React.useEffect(() => {
-    csv("/data/public_libraries.csv", (d, id) => ({
-      id,
-      state: d["State"],
-      position: [+d["Longitude"], +d["Latitude"]],
-    }))
-      .then((libraries) =>
-        libraries.filter((d) => d.position[0] != null && d.position[1] != null)
-      )
-      .then(setLibraries);
-  }, []);
-
-  // extract data from lounge_dat.json file
-  // React.useEffect(() => {
-  //   fetch("/data/lounge_dat.json")
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       setLibraries(data);
-  //     });
-  // }, []);
 
   const [radius, setRadius] = React.useState(15);
   const handleToggleRadius = () =>
@@ -63,7 +38,6 @@ const App = () => {
           height="100vh"
           viewState={viewState}
           onViewStateChange={handleChangeViewState}
-          libraries={libraries}
           radius={radius}
           arcsEnabled={arcsEnabled}
         />

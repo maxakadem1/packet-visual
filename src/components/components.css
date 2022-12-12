@@ -57,9 +57,10 @@
 }
 
 .graphDisplay {
+  color: whitesmoke;
   height: 11em;
   width: 11em;
-  background-color: white;
+  background-color: rgba(0,0,0,0.5);
   margin: 1.5em 0 1.5em 0;
   box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
   border: 1px solid darkgrey;
@@ -78,13 +79,14 @@
 }
 
 .playButton {
+  color: lightgrey;
   outline: none;
   font-size: 4em;
   height: 130px;
   width: 130px;
-  background-color: white;
+  background-color: rgba(0,0,0,0.5) !important;
   box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
-  border: 5px solid darkslateblue;
+  border: 5px solid #448466;
   border-radius: 50%;
   cursor: pointer;
 }
@@ -94,13 +96,11 @@
 }
 
 .playButton:hover {
-  background-color: whitesmoke;
   transition: 0.3s ease-in-out;
 }
 
 .playButton:active {
-  background-color: darkslateblue;
-  border-color: gainsboro;
+  border-color: seagreen;
   color: whitesmoke;
 }
 

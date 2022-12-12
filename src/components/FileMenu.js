@@ -39,17 +39,19 @@ export default function FileMenu() {
     reader.onload = () => {
       const fileUrl = URL.createObjectURL(file)
 
-      fetch ('/addFile', {
+      fetch ('/userData', {
         method: 'POST',
         body: JSON.stringify({ fileUrl }),
       })
         .then (response => {
           if (response.ok) {  
             let retURL = response.text()
-            setPacketFile(retURL)
+            console.log(retURL)
+            setPacketFile(`/data/${retURL}`)
           } 
           else {  
             console.error(`Data file URL is not returned for ${fn}`);
+            console.log(response.text())
           }
         })
     }

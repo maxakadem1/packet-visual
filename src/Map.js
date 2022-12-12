@@ -83,8 +83,8 @@ export default function Map({
       {/* Print packet data on the map */}
       { packetData &&
         <div className="rawData">
-          <h4 style={{ transform: "translate(60vw, 0)" }}>Incoming packet!</h4>
-          <ol style={{ transform: "translate(60vw, 0)" }}>
+          <h4 style={{ transform: "translate(2vw, 40vh)" }}>Incoming packet!</h4>
+          <ol style={{ transform: "translate(2vw, 40vh)" }}>
             <li>Source IP: {packetData.sourceIP}</li>
             <li>Dest IP: {packetData.destIP}</li>
             <li>

@@ -23,39 +23,41 @@ export default function FileMenu() {
   const [pData, setPacketFile] = useRecoilState(setPacketDataFile)
   const loadFile = (e) => {
     const file = e.target.files[0]
-    let fn = file.name
-    let extension = fn.split('.').pop()
-    if(extension == "pcapng"){
-      setFileLoadSuccess()
-      changeStatus("READY → " + fn)
-    }
-    else {
-      alert("Invalid file. Packet Visual only accepts .pcapng files.")
-      changeStatus("File load failed. Please try a new file.")
-    }
+    if (file){
+      let fn = file.name
+      let extension = fn.split('.').pop()
+      if(extension == "pcapng"){
+        setFileLoadSuccess()
+        changeStatus("READY → " + fn)
+      }
+      else {
+        alert("Invalid file. Packet Visual only accepts .pcapng files.")
+        changeStatus("File load failed. Please try a new file.")
+      }
 
-    // Upload file to server to be parsed
-    const reader = new FileReader();
-    reader.onload = () => {
-      const fileUrl = URL.createObjectURL(file)
+      // Upload file to server to be parsed
+      const reader = new FileReader();
+      reader.onload = () => {
+        const fileUrl = URL.createObjectURL(file)
 
-      fetch ('/userData', {
-        method: 'POST',
-        body: JSON.stringify({ fileUrl }),
-      })
-        .then (response => {
-          if (response.ok) {  
-            let retURL = response.text()
-            console.log(retURL)
-            setPacketFile(`/data/${retURL}`)
-          } 
-          else {  
-            console.error(`Data file URL is not returned for ${fn}`);
-            console.log(response.text())
-          }
+        fetch ('/userData', {
+          method: 'POST',
+          body: JSON.stringify({ fileUrl }),
         })
+          .then (response => {
+            if (response.ok) {  
+              let retURL = response.text()
+              console.log(retURL)
+              setPacketFile(`/data/${retURL}`)
+            } 
+            else {  
+              console.error(`Data file URL is not returned for ${fn}`);
+              console.log(response.text())
+            }
+          })
+      }
+      reader.readAsBinaryString(file)
     }
-    reader.readAsBinaryString(file)
     
   }
 

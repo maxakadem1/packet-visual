@@ -1,7 +1,9 @@
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
+from werkzeug import secure_filename
 import parse_pcapng
 import uuid
+
 
 # creating the flask app
 app = Flask(__name__)
@@ -13,6 +15,8 @@ api = Api(app)
 #to the REST API methods being called by the react portion of the app
 class userData(Resource):
 
+    #Given the users UUID parse the pcab file and turn it into a json
+    #If No errors return the json back to the user otherwise send error 404 message
     def get(self,userID):
         data = {}
         error = 404
@@ -24,31 +28,36 @@ class userData(Resource):
             return {"error":"file error"},error
         return jsonify(data)
     
+    #Generate a uuid for a user which is then used to access that users pcab file
+    #Send the uuid back to the user for them to save it when they later request the json of the pcab
     def post(self):
-        #Add the downloading of data here
-        
-        return jsonify()
+        userID = uuid.uuid4()
+        file = request.files("file")
+        if file.filename != "":
+            file.save(secure_filename("public/data/" + userID))
+        return userID
 
-class sampleData(Resource):
-
-    def get(self):
-        sampledata = "Blank temp"
-        return jsonify(sampledata)
-
+#Send the index file for the get request
 class homePage(Resource):
 
     def get(self):
-        homePage = "Temp home page"
+        homePage = ""
+        error = 404
+        try:
+            with open("public/index.html","r") as file:
+                homePage = file.read()
+        except:
+            return {"error":"file error"},error
         return homePage
 
+#WORK IN PROGRESS
 class anaylyze(Resource):
 
-    def get(self):
-        return "fuck"
+    def get(self,userID):
+        return "TODO"
 
 api.add_resource(homePage, '/')
 api.add_resource(userData, '/userData')
-api.add_resource(sampleData,'/sampleData')
 api.add_resource(anaylyze, '/analyze')
 
 if __name__ == '__main__':

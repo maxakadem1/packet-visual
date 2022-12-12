@@ -1,0 +1,106 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap");
+
+/*========================================
+    Component custom styles
+  =======================================*/
+* {
+  font-family: "Inter", sans-serif;
+}
+
+#overlays {
+  position: absolute;
+  z-index: 99999;
+  width: 100vw;
+}
+
+.uiOverlay {
+  position: absolute;
+  z-index: 100001;
+}
+
+.centerDisplay {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+
+.lateralFlex {
+  display: flex;
+  align-items: center;
+}
+
+.fileMenu {
+  top: 2vh;
+  left: 1vw;
+  height: 6em;
+  width: 50vw;
+  background-color: gray;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+  padding: 0 1em 0 1em;
+}
+
+.sideText {
+  margin-left: 2em;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.graphView {
+  top: 1vh;
+  right: 2vw;
+  height: max-content;
+  width: max-content;
+  text-align: center;
+}
+
+.graphDisplay {
+  height: 11em;
+  width: 11em;
+  background-color: white;
+  margin: 1.5em 0 1.5em 0;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid darkgrey;
+}
+
+.graphDisplay:hover {
+  border-color: black;
+  cursor: pointer;
+}
+
+.playbackMenu {
+  top: 80vh;
+  left: 2vw;
+  height: 5em;
+  width: max-content;
+}
+
+.playButton {
+  outline: none;
+  font-size: 4em;
+  height: 130px;
+  width: 130px;
+  background-color: white;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+  border: 5px solid darkslateblue;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.playButton div {
+  transform: translateX(5px);
+}
+
+.playButton:hover {
+  background-color: whitesmoke;
+  transition: 0.3s ease-in-out;
+}
+
+.playButton:active {
+  background-color: darkslateblue;
+  border-color: gainsboro;
+  color: whitesmoke;
+}
+
+.mb-3 {
+  color: white;
+}

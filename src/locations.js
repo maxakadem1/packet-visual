@@ -1,6 +1,6 @@
-export const usa = {
-  longitude: -98.12078906038815,
-  latitude: 39.07050154936433,
+export const canada = {
+  longitude: -96.8165,
+  latitude: 49.7713,
   zoom: 3.847,
   pitch: 41.8,
   bearing: 0.7,

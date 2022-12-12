@@ -9,7 +9,7 @@ import Overlays from "./components/Overlays";
 import { RecoilRoot } from "recoil";
 
 const App = () => {
-  const [viewState, setViewState] = React.useState(Locations.usa);
+  const [viewState, setViewState] = React.useState(Locations.canada);
   const handleChangeViewState = ({ viewState }) => setViewState(viewState);
   const handleFlyTo = (destination) =>
     setViewState({

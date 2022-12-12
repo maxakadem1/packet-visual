@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
 
+
 # creating the flask app
 app = Flask(__name__)
 # creating an API object
@@ -33,10 +34,15 @@ class homePage(Resource):
         homePage = "Temp home page"
         return homePage
 
+class anaylyze(Resource):
+
+    def get(self):
+        return "fuck"
 
 api.add_resource(homePage, '/')
 api.add_resource(userData, '/userData')
 api.add_resource(sampleData,'/sampleData')
+api.add_resource(anaylyze, '/analyze')
 
 if __name__ == '__main__':
 

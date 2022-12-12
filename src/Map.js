@@ -8,8 +8,8 @@ import { lineString } from "@turf/helpers";
 
 import ArcBrushingLayer from "./goodies/ArcBrushingLayer";
 
-import { useRecoilValue } from 'recoil';
-import { incomingPacket } from './components/stores';
+import { useRecoilValue } from "recoil";
+import { incomingPacket } from "./components/stores";
 
 function SvgOverlayExample({ libraries, radius }) {
   const redraw = ({ project }) => {
@@ -59,22 +59,29 @@ export default function Map({
   const packetData = useRecoilValue(incomingPacket);
 
   return (
-    
     <MapGL
+      mapStyle={"mapbox://styles/mapbox/navigation-night-v1"}
       width={width}
       height={height}
       viewState={viewState}
       onViewStateChange={onViewStateChange}
     >
       {/* TEMPORARILY print raw data on the map */}
-      <h4 style={{ transform: "translate(60vw, 0)" }}>Incoming packet!</h4>
-      <ol style={{ transform: "translate(60vw, 0)" }}>
+      <div className="rawData">
+        <h4 style={{ transform: "translate(60vw, 0)" }}>Incoming packet!</h4>
+        <ol style={{ transform: "translate(60vw, 0)" }}>
           <li>Source IP: {packetData.sourceIP}</li>
           <li>Dest IP: {packetData.destIP}</li>
-          <li>Source Location: LAT {packetData.sourceLat} , LONG {packetData.sourceLong}</li>
-          <li>Dest Location: LAT {packetData.destLat} , LONG {packetData.destLong}</li>
-      </ol>
-      <Spring to={{ arcCoef: arcsEnabled ? 1 : 1e-10 }}>
+          <li>
+            Source Location: LAT {packetData.sourceLat} , LONG{" "}
+            {packetData.sourceLong}
+          </li>
+          <li>
+            Dest Location: LAT {packetData.destLat} , LONG {packetData.destLong}
+          </li>
+        </ol>
+      </div>
+      {/* <Spring to={{ arcCoef: arcsEnabled ? 1 : 1e-10 }}>
         {(springProps) => {
           const layers = [
             new ScatterplotLayer({
@@ -82,7 +89,7 @@ export default function Map({
               data: libraries,
               getRadius: 500 * radius,
               radiusMaxPixels: 15,
-              getFillColor: [255, 99, 71],
+              getFillColor: [32, 184, 231],
               transitions: {
                 getRadius: {
                   duration: 1000,
@@ -115,7 +122,7 @@ export default function Map({
 
           return <DeckGL layers={layers} viewState={viewState} />;
         }}
-      </Spring>
+      </Spring> */}
       {/* <Spring from={{ radius: 0 }} to={{ radius }}>
         {springProps => (
           <SvgOverlayExample

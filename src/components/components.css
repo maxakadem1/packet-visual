@@ -1,97 +1,113 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap");
+
 /*========================================
     Component custom styles
   =======================================*/
-
-#overlays{
-    position: absolute;
-    z-index: 99999;
-    width: 100vw;
+* {
+  font-family: "Inter", sans-serif;
 }
 
-.uiOverlay{
-    position: absolute;
-    z-index: 100001;
+#overlays {
+  position: absolute;
+  z-index: 99999;
+  width: 100vw;
 }
 
-.centerDisplay{
-    display: grid;
-    justify-items: center;
-    align-items: center;
+.uiOverlay {
+  position: absolute;
+  z-index: 100001;
 }
 
-.lateralFlex{
-    display: flex;
-    align-items: center;
+.centerDisplay {
+  display: grid;
+  justify-items: center;
+  align-items: center;
 }
 
-.fileMenu{
-    top: 2vh;
-    left: 1vw;
-    height: 6em;
-    width: 50vw;
-    background-color: white;
-    box-shadow: 3px 3px 8px rgba(0,0,0,0.3);
-    padding: 0 1em 0 1em;
+.lateralFlex {
+  display: flex;
+  align-items: center;
 }
 
-.sideText{
-    margin-left: 2em;
-    font-weight: 800;
-    white-space: nowrap;
+.fileMenu {
+  top: 2vh;
+  left: 1vw;
+  height: 6em;
+  width: 50vw;
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+  padding: 0 1em 0 1em;
+  /* curved sides */
+  border-radius: 10px;
 }
 
-.graphView{
-    top: 1vh;
-    right: 2vw;
-    height: max-content;
-    width: max-content;
-    text-align: center;
+.sideText {
+  margin-left: 2em;
+  font-weight: 800;
+  white-space: nowrap;
+  color: white;
 }
 
-.graphDisplay{
-    height: 11em;
-    width: 11em;
-    background-color: white;
-    margin: 1.5em 0 1.5em 0;
-    box-shadow: 3px 3px 8px rgba(0,0,0,0.3);
-    border: 1px solid darkgrey;
+.graphView {
+  top: 1vh;
+  right: 2vw;
+  height: max-content;
+  width: max-content;
+  text-align: center;
 }
 
-.graphDisplay:hover{
-    border-color: black;
-    cursor: pointer;
+.graphDisplay {
+  height: 11em;
+  width: 11em;
+  background-color: white;
+  margin: 1.5em 0 1.5em 0;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid darkgrey;
 }
 
-.playbackMenu{
-    top: 80vh;
-    left: 2vw;
-    height: 5em;
-    width: max-content;
+.graphDisplay:hover {
+  border-color: black;
+  cursor: pointer;
 }
 
-.playButton{
-    outline: none;
-    font-size: 4em;
-    height: 130px;
-    width: 130px;
-    background-color: white;
-    box-shadow: 3px 3px 8px rgba(0,0,0,0.3);
-    border: 5px solid darkslateblue;
-    border-radius: 50%;
-    cursor: pointer;
+.playbackMenu {
+  top: 80vh;
+  left: 2vw;
+  height: 5em;
+  width: max-content;
 }
 
-.playButton div{
-    transform: translateX(5px);
+.playButton {
+  outline: none;
+  font-size: 4em;
+  height: 130px;
+  width: 130px;
+  background-color: white;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+  border: 5px solid darkslateblue;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
-.playButton:hover{
-    background-color: whitesmoke;
-    transition: 0.3s ease-in-out;
+.playButton div {
+  transform: translateX(5px);
 }
 
-.playButton:active{
-    background-color: darkslateblue;
-    border-color: gainsboro;
-    color: whitesmoke;
+.playButton:hover {
+  background-color: whitesmoke;
+  transition: 0.3s ease-in-out;
+}
+
+.playButton:active {
+  background-color: darkslateblue;
+  border-color: gainsboro;
+  color: whitesmoke;
+}
+
+.mb-3 {
+  color: white;
+}
+
+.rawData {
+  color: whitesmoke;
 }

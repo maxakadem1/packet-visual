@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
-
+import parse_pcapng
+import uuid
 
 # creating the flask app
 app = Flask(__name__)
@@ -12,9 +13,15 @@ api = Api(app)
 #to the REST API methods being called by the react portion of the app
 class userData(Resource):
 
-    def get(self):
-        data = {"Data:":"Here"}
-
+    def get(self,userID):
+        data = {}
+        error = 404
+        try:
+            fileName = parse_pcapng(userID)
+            with open(fileName, 'r') as file:
+                data = file.read()
+        except:
+            return {"error":"file error"},error
         return jsonify(data)
     
     def post(self):

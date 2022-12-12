@@ -70,12 +70,28 @@
 
 .graphDisplay {
   color: whitesmoke;
-  height: 11em;
-  width: 11em;
+  height: 15em;
+  width: 15em;
   background-color: rgba(0,0,0,0.5);
   margin: 1.5em 0 1.5em 0;
   box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
   border: 1px solid darkgrey;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  grid-template-rows: 70% auto;
+}
+
+.graphImg{
+  height: 100%;
+  width: max-content;
+  margin-bottom: 0.5em;
+  margin-top: 1em;
+}
+
+.graphImg img{
+  width: max-content;
+  height: 100%;
 }
 
 .graphDisplay:hover {

@@ -48,7 +48,7 @@ export default function FileMenu() {
             if (response.ok) {  
               let retURL = response.text()
               console.log(retURL)
-              setPacketFile(`/data/${retURL}`)
+              //setPacketFile(`/data/${retURL}`)
             } 
             else {  
               console.error(`Data file URL is not returned for ${fn}`);

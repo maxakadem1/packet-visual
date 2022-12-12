@@ -1,6 +1,6 @@
 import React from "react"
 import "./components.css"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRecoilState } from "recoil"
 import { isPlaybackDone, done, sendPacket, incomingPacket } from "./stores"
 
@@ -16,11 +16,12 @@ export default function Playback({visible=true, dataUrl=null}){
   let maxPackets = 50
 
   // Fetch JSON packet data
+  
   fetch(dataUrl)
     .then ((response) => response.json())
     .then ((data) => {
       packets = Object.values(data)
-      packets = packets.slice(0, Math.min(packets.length, maxPackets))
+      packets = packets.slice(20, Math.min(packets.length, maxPackets+20))
 
       // Get time intervals
       let start = parseFloat(packets[0]["timestamp"])

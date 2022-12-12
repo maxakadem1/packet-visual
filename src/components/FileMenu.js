@@ -3,22 +3,24 @@ import "./components.css";
 import { useState } from "react"
 import Form from 'react-bootstrap/Form';
 import { useRecoilState } from "recoil"
-import { isFileLoaded, loaded } from "./stores"
+import { isFileLoaded, loaded, setPacketDataFile, pData } from "./stores"
 
 export default function FileMenu() {
 
-  const [loaded, setLoaded] = useRecoilState(isFileLoaded)
   /* setFileLoadSuccess
    *    Notify application if file load is successful
    */
+  const [loaded, setLoaded] = useRecoilState(isFileLoaded)
   const setFileLoadSuccess = () => { setLoaded(true) }
 
   // Text to be shown in FileMenu bar
   const[statusText, changeStatus] = useState("No file uploaded")
 
+
   /* loadFile
    *    Manage new file intake
    */
+  const [pData, setPacketFile] = useRecoilState(setPacketDataFile)
   const loadFile = (e) => {
     const file = e.target.files[0]
     let fn = file.name
@@ -32,7 +34,27 @@ export default function FileMenu() {
       changeStatus("File load failed. Please try a new file.")
     }
 
-    // TODO: Upload file to the server to be parsed
+    // Upload file to server to be parsed
+    const reader = new FileReader();
+    reader.onload = () => {
+      const fileUrl = URL.createObjectURL(file)
+
+      fetch ('/addFile', {
+        method: 'POST',
+        body: JSON.stringify({ fileUrl }),
+      })
+        .then (response => {
+          if (response.ok) {  
+            let retURL = response.text()
+            setPacketFile(retURL)
+          } 
+          else {  
+            console.error(`Data file URL is not returned for ${fn}`);
+          }
+        })
+    }
+    reader.readAsBinaryString(file)
+    
   }
 
   return (

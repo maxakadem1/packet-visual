@@ -10,6 +10,16 @@ const loaded = selector({
   get: ({ get }) => get(isFileLoaded),
 });
 
+// setPacketDataFile: Return the URL of the JSON parsed data from the .pcapng file
+const setPacketDataFile = atom({
+  key: 'setPacketDataFile',
+  default: '/data/UM_Center_Capture.json', // Stub data file
+});
+const pData = selector({
+  key: 'pData',
+  get: ({ get }) => get(setPacketDataFile),
+});
+
 
 // isPlaybackDone: Check if Playback is finished
 const isPlaybackDone = atom({
@@ -37,6 +47,7 @@ const incomingPacket = selector({
 
 export { 
     isFileLoaded, loaded,
+    setPacketDataFile, pData,
     isPlaybackDone, done,
     sendPacket, incomingPacket
 };

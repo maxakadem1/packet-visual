@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useRecoilState } from "recoil"
 import { isPlaybackDone, done, sendPacket, incomingPacket } from "./stores"
 
-export default function Playback({visible=true}){
+export default function Playback({visible=true, dataUrl=null}){
 
   let packets = []
   let playTime = 0
@@ -16,24 +16,26 @@ export default function Playback({visible=true}){
   let maxPackets = 50
 
   // Fetch JSON packet data
-  fetch("/data/UM_Center_Capture.json")
-  .then((response) => response.json())
-  .then((data) => {
-    packets = Object.values(data)
+  fetch(dataUrl)
+    .then ((response) => response.json())
+    .then ((data) => {
+      packets = Object.values(data)
 
-    // Get time intervals
-    let start = parseFloat(packets[0]["timestamp"])
+      // Get time intervals
+      let start = parseFloat(packets[0]["timestamp"])
 
-    let timestamps = packets.map(p => parseFloat(p["timestamp"]))
-    for (let t of timestamps) {
-      let diff = Math.round((t-start)*1000)
-      times.push(diff)
-    }
-
-    times = times.slice(0,maxPackets)
-
-    totalTime = times[times.length-1]+100
-  })
+      let timestamps = packets.map(p => parseFloat(p["timestamp"]))
+      for (let t of timestamps) {
+        let diff = Math.round((t-start)*1000)
+        times.push(diff)
+      }
+      
+      times = times.slice(0,maxPackets)
+      totalTime = times[times.length-1]+100
+    })
+    .catch (function() {
+      console.error(`Error retrieving data from ${dataUrl}`);
+    })
   
   const [time, setTime] = useState("00:00:00:00")
   const [done, setDone] = useRecoilState(isPlaybackDone)

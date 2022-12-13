@@ -2,7 +2,7 @@ import React from "react"
 import "./components.css"
 import { useState, useEffect } from "react"
 import { useRecoilState } from "recoil"
-import { isPlaybackDone, done, sendPacket, incomingPacket } from "./stores"
+import { isPlaybackDone, done, sendPacket, incomingPacket,  } from "./stores"
 
 export default function Playback({visible=true, dataUrl=null}){
 
@@ -13,30 +13,31 @@ export default function Playback({visible=true, dataUrl=null}){
   let currFrame = 0
 
   // Set packet upper bound to 50
-  let maxPackets = 50
+  let maxPackets = 10000
 
   // Fetch JSON packet data
+  const fetchJSON = () => {
+    fetch(dataUrl)
+      .then ((response) => response.json())
+      .then ((data) => {
+        packets = Object.values(data)
+        packets = packets.slice(20, Math.min(packets.length, maxPackets+20))
   
-  fetch(dataUrl)
-    .then ((response) => response.json())
-    .then ((data) => {
-      packets = Object.values(data)
-      packets = packets.slice(20, Math.min(packets.length, maxPackets+20))
-
-      // Get time intervals
-      let start = parseFloat(packets[0]["timestamp"])
-
-      let timestamps = packets.map(p => parseFloat(p["timestamp"]))
-      for (let t of timestamps) {
-        let diff = Math.round((t-start)*1000)
-        times.push(diff)
-      }
-      
-      totalTime = times[times.length-1]+100
-    })
-    .catch (function() {
-      console.error(`Error retrieving data from ${dataUrl}`);
-    })
+        // Get time intervals
+        let start = parseFloat(packets[0]["timestamp"])
+  
+        let timestamps = packets.map(p => parseFloat(p["timestamp"]))
+        for (let t of timestamps) {
+          let diff = Math.round((t-start)*1000)
+          times.push(diff)
+        }
+        
+        totalTime = times[times.length-1]+100
+      })
+      .catch (function() {
+        console.error(`Error retrieving data from ${dataUrl}`);
+      })
+  }
   
   const [time, setTime] = useState("00:00:00:00")
   const [done, setDone] = useRecoilState(isPlaybackDone)
@@ -68,6 +69,7 @@ export default function Playback({visible=true, dataUrl=null}){
    *    Run the Playback component from the beginning on button click
    */
   const play = () => {
+    fetchJSON()
     // Hide graphs when replaying
     setPlaybackDone(false)
 
@@ -109,6 +111,8 @@ export default function Playback({visible=true, dataUrl=null}){
    */
   function end(){
     setPlaybackDone(true)
+    packets = []
+    times = []
     playTime = 0
     totalTime = 0
     currFrame = -1

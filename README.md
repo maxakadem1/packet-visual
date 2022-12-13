@@ -7,7 +7,7 @@ This demo uses [react-map-gl](https://uber.github.io/react-map-gl) and [deck.gl]
 - Maxim Abdulkhalikov (Frontend)
 - Andrea Abellera (Frontend)
 - Ethan Ducharme (Backend)
-- Daniel (Backend)
+- Daniel Debassige (Backend)
 
 #### Tech stack
 

@@ -42,7 +42,7 @@ export default function FileMenu() {
 
       fetch ('/userData', {
         method: 'POST',
-        body: JSON.stringify({ fileUrl }),
+        body: file,
       })
         .then (response => {
           if (response.ok) {  
@@ -74,4 +74,5 @@ export default function FileMenu() {
       <p className="sideText">{statusText}</p>
     </div>
   );
+}
 }

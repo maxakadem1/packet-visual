@@ -11,9 +11,12 @@ export default function Playback({visible=true, dataUrl=null}){
   let totalTime = 0
   let times = []
   let currFrame = 0
+  let playRate = 250
+  let renderedPackets = 0
+  let maxRenderedPackets = 20
 
   // Set packet upper bound to 50
-  let maxPackets = 20000
+  let maxPackets = 50000
 
   // Fetch JSON packet data
   const fetchJSON = () => {
@@ -78,12 +81,23 @@ export default function Playback({visible=true, dataUrl=null}){
     let pid = setInterval(loadContent, 100)
     function loadContent() {
       if (playTime < totalTime){
-        if(playTime >= times[currFrame]){
+        renderedPackets = 0
+        while(playTime >= times[currFrame]){
           setThePacket(packets[currFrame])
           currFrame++
+          renderedPackets++
+
+          if (renderedPackets >= maxRenderedPackets) {
+            break
+          }
+        }
+        if (renderedPackets >= maxRenderedPackets) {
+          playTime = times[currFrame-1]
+        }
+        else {
+          playTime = Math.min(playTime+playRate, times[currFrame])
         }
         
-        playTime += 100
         setTime(formatTime(playTime))
       }
       else {

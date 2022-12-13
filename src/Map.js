@@ -61,7 +61,7 @@ export default function Map({
   useEffect(() => { packetRef.current = packets })
   useEffect(() => { packetLinksRef.current = packetLinks })
   useEffect(() => {
-    setInterval(() => { clearPacket() }, 500)
+    setInterval(() => { clearPacket() }, 10)
   }, [])
 
   function clearPacket(){

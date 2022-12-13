@@ -37,17 +37,17 @@ export default function FileMenu() {
     // Upload file to server to be parsed
     const reader = new FileReader();
     reader.onload = () => {
-      const fileUrl = URL.createObjectURL(file)
+      //const fileUrl = URL.createObjectURL(file)
 
       fetch ('/userData', {
         method: 'POST',
-        body: JSON.stringify({ fileUrl }),
+        body: file,
       })
         .then (response => {
           if (response.ok) {  
             let retURL = response.text()
             console.log(retURL)
-            setPacketFile(`/data/${retURL}`)
+            setPacketFile(`/userData/${retURL}`)
           } 
           else {  
             console.error(`Data file URL is not returned for ${fn}`);
@@ -61,10 +61,12 @@ export default function FileMenu() {
 
   return (
     <div className={"uiOverlay fileMenu lateralFlex"}>
-      <Form.Group controlId="formFile" className="mb-3">
+      <Form.Group controlId="formFile" className="mb-3" >
         <Form.Label>Upload .pcapng file</Form.Label>
         <Form.Control 
           type="file"
+          name = "file"
+          Content-Type=  'multipart/form-data'
           onChange={loadFile} 
         />
       </Form.Group>

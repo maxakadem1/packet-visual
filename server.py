@@ -1,14 +1,16 @@
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 import parse_pcapng
 import uuid
+import traceback
 
 
 # creating the flask app
 app = Flask(__name__)
 # creating an API object
 api = Api(app)
+
 
 #Class for different resources/Paths 
 #Each class will be possess their own get/post/put/del methods which correspond 
@@ -17,24 +19,36 @@ class userData(Resource):
 
     #Given the users UUID parse the pcab file and turn it into a json
     #If No errors return the json back to the user otherwise send error 404 message
-    def get(self,userID):
+    def get(self):
+        
+        userID = "public/data/74569a12-6e35-469d-be9e-160fdbb4f78d" + ".pcapng"
         data = {}
         error = 404
         try:
-            fileName = parse_pcapng(userID)
-            with open(fileName, 'r') as file:
+            fileName = parse_pcapng.parse_pcapng_file(userID)
+            print("parsed")
+        except Exception:
+            print(traceback.format_exc())
+            return {"Parsing error"},error
+
+        try:
+            with open(fileName, 'rb') as file:
                 data = file.read()
         except:
-            return {"error":"file error"},error
+            return {"Reading error"},500
         return jsonify(data)
     
     #Generate a uuid for a user which is then used to access that users pcab file
     #Send the uuid back to the user for them to save it when they later request the json of the pcab
     def post(self):
-        userID = uuid.uuid4()
-        file = request.files("file")
-        if file.filename != "":
-            file.save(secure_filename("public/data/" + userID))
+        userID = str(uuid.uuid4())
+        fileName = "public/data/" + userID + ".pcapng"
+        
+        try:
+            with open(fileName,"wb") as pcab:
+                pcab.write(request.data)
+        except:
+            return {"error": "file error"}, 404
         return userID
 
 #Send the index file for the get request

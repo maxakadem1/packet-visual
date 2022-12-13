@@ -22,7 +22,6 @@ def parse_pcapng_file(filename):
 
     output = {}
     current_id = 0
-
     for block in pcapng.FileScanner( open( filename, 'rb' ) ):
         if isinstance( block, pcapng.blocks.EnhancedPacket ):
             payload = Ether(block.packet_data).payload

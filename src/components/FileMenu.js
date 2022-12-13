@@ -23,16 +23,17 @@ export default function FileMenu() {
   const [pData, setPacketFile] = useRecoilState(setPacketDataFile)
   const loadFile = (e) => {
     const file = e.target.files[0]
-    let fn = file.name
-    let extension = fn.split('.').pop()
-    if(extension == "pcapng"){
-      setFileLoadSuccess()
-      changeStatus("READY → " + fn)
-    }
-    else {
-      alert("Invalid file. Packet Visual only accepts .pcapng files.")
-      changeStatus("File load failed. Please try a new file.")
-    }
+    if (file){
+      let fn = file.name
+      let extension = fn.split('.').pop()
+      if(extension == "pcapng"){
+        setFileLoadSuccess()
+        changeStatus("READY → " + fn)
+      }
+      else {
+        alert("Invalid file. Packet Visual only accepts .pcapng files.")
+        changeStatus("File load failed. Please try a new file.")
+      }
 
     // Upload file to server to be parsed
     const reader = new FileReader();
@@ -41,13 +42,13 @@ export default function FileMenu() {
 
       fetch ('/userData', {
         method: 'POST',
-        body: file,
+        body: JSON.stringify({ fileUrl }),
       })
         .then (response => {
           if (response.ok) {  
             let retURL = response.text()
             console.log(retURL)
-            setPacketFile(`/userData/${retURL}`)
+            setPacketFile(`/data/${retURL}`)
           } 
           else {  
             console.error(`Data file URL is not returned for ${fn}`);

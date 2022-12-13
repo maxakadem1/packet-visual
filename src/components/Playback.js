@@ -13,7 +13,7 @@ export default function Playback({visible=true, dataUrl=null}){
   let currFrame = 0
 
   // Set packet upper bound to 50
-  let maxPackets = 10000
+  let maxPackets = 20000
 
   // Fetch JSON packet data
   const fetchJSON = () => {
@@ -69,6 +69,7 @@ export default function Playback({visible=true, dataUrl=null}){
    *    Run the Playback component from the beginning on button click
    */
   const play = () => {
+    end()
     fetchJSON()
     // Hide graphs when replaying
     setPlaybackDone(false)
@@ -115,7 +116,7 @@ export default function Playback({visible=true, dataUrl=null}){
     times = []
     playTime = 0
     totalTime = 0
-    currFrame = -1
+    currFrame = 0
     setTime("00:00:00:00 - ANIMATION COMPLETE")
   }
 

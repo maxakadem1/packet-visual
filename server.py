@@ -4,6 +4,8 @@ from werkzeug.utils import secure_filename
 import parse_pcapng
 import uuid
 import traceback
+import os
+import json
 
 
 # creating the flask app
@@ -20,9 +22,10 @@ class userData(Resource):
     #Given the users UUID parse the pcab file and turn it into a json
     #If No errors return the json back to the user otherwise send error 404 message
     def get(self):
-        
-        userID = "public/data/74569a12-6e35-469d-be9e-160fdbb4f78d" + ".pcapng"
-        data = {}
+
+        userID = request.args.get('userId')
+        print(userID)
+        data = "" 
         error = 404
         try:
             fileName = parse_pcapng.parse_pcapng_file(userID)
@@ -32,8 +35,8 @@ class userData(Resource):
             return {"Parsing error"},error
 
         try:
-            with open(fileName, 'rb') as file:
-                data = file.read()
+            with open(fileName, 'r') as file:
+                data = json.load(file)
         except:
             return {"Reading error"},500
         return jsonify(data)
@@ -42,8 +45,8 @@ class userData(Resource):
     #Send the uuid back to the user for them to save it when they later request the json of the pcab
     def post(self):
         userID = str(uuid.uuid4())
-        fileName = "public/data/" + userID + ".pcapng"
-        
+        dataFolder = os.path.join("public", "data")
+        fileName = os.path.join(dataFolder,userID) + ".pcapng"
         try:
             with open(fileName,"wb") as pcab:
                 pcab.write(request.data)

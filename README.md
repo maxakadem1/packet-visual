@@ -1,7 +1,5 @@
 ## Wireshark Data Visualisation using React with Mapbox, DeckGL and Bootstrap
 
-This demo uses [react-map-gl](https://uber.github.io/react-map-gl) and [deck.gl](https://deck.gl) to render Mapbox maps with different layers on top.
-
 #### Contributors
 
 - Maxim Abdulkhalikov (Frontend)
@@ -23,13 +21,6 @@ This demo uses [react-map-gl](https://uber.github.io/react-map-gl) and [deck.gl]
   - UUID
   - Scapy
   - python-pcapng
-
-#### Useful Utilities
-
-- http://geojson.io
-- [TopoJSON](https://github.com/topojson/topojson)
-- [Turf.js](https://turfjs.org)
-- [IPAPI](https://ipapi.co)
 
 ---
 

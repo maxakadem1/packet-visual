@@ -40,23 +40,26 @@ export default function FileMenu() {
     reader.onload = () => {
       //const fileUrl = URL.createObjectURL(file)
 
-      fetch ('/userData', {
-        method: 'POST',
-        body: file,
-      })
-        .then (response => {
-          if (response.ok) {  
-            let retURL = response.text()
-            console.log(retURL)
-            setPacketFile(`/data/${retURL}`)
-          } 
-          else {  
-            console.error(`Data file URL is not returned for ${fn}`);
-            console.log(response.text())
-          }
+        fetch ('/userData', {
+          method: 'POST',
+          body: file,
         })
-    }
-    reader.readAsBinaryString(file)
+          .then (response => {
+            if (response.ok) {
+              (async ()=>{
+                let retURL = await response.text()
+                retURL = retURL.replaceAll('"','')
+                console.log(retURL)
+                setPacketFile(`/userData?userId=${retURL}.pcapng`)
+                //setPacketFile(`/userData`)
+              })();
+            } 
+            else {  
+              console.error(`Data file URL is not returned for ${fn}`);
+            }
+          })
+      }
+      reader.readAsBinaryString(file)
     
   }
 

@@ -19,10 +19,10 @@ from time import sleep
 def parse_pcapng_file(filename):
     ip_locations = {}
     reserved_addresses = []
-
+    file_to_open = os.path.join("public","data",filename)
     output = {}
     current_id = 0
-    for block in pcapng.FileScanner( open( filename, 'rb' ) ):
+    for block in pcapng.FileScanner( open( file_to_open, 'rb' ) ):
         if isinstance( block, pcapng.blocks.EnhancedPacket ):
             payload = Ether(block.packet_data).payload
 

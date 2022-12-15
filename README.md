@@ -32,6 +32,10 @@
  - Run `npm install` to install all dependancies needed for React
  - Run `npm run lauch` to lauch React part of the application
  - Run `python3 server.py` to lauch the server side of the application
+  - Please make sure that all appropriate python libraries are installed:
+    -  `pip install scapy`
+    -  `pip install ipaddress`
+    -  `pip install python-pcapng`
  - Import the ".pcapng" file into the react application using a specialised button on top of the screen
  - Press Launch button located at the bottom left of the screen
  

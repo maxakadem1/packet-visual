@@ -15,7 +15,7 @@ export default function GraphView({showGraphs=false}) {
 
   useEffect(() => {
     if(playbackDone){
-      fetch ('/anaylyzeProtocols?userId='+username, {
+      fetch ('/anaylyzeProtocols?userId='+user, {
         method: 'GET',
       })
         .then (response => {
@@ -32,7 +32,7 @@ export default function GraphView({showGraphs=false}) {
           }
         })
 
-        fetch ('/anaylyzeLayers?userId='+username, {
+        fetch ('/anaylyzeLayers?userId='+user, {
           method: 'GET',
         })
           .then (response => {

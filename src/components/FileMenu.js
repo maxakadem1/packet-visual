@@ -56,9 +56,8 @@ export default function FileMenu() {
                 let retURL = await response.text()
                 retURL = retURL.replaceAll('"','')
                 console.log(retURL)
-                setPacketFile(`/userData?userId=${retURL}.pcapng`)
+                setPacketFile(`/userData?userId=${retURL}`)
                 setUser(retURL)
-                //setPacketFile(`/userData`)
               })();
             } 
             else {  

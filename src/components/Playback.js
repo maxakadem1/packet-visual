@@ -16,7 +16,7 @@ export default function Playback({visible=true, dataUrl=null}){
   let maxRenderedPackets = 20
 
   // Set packet upper bound 
-  let maxPackets = 5000
+  let maxPackets = 50000
   
   const [time, setTime] = useState("00:00:00:00")
   const [done, setDone] = useRecoilState(isPlaybackDone)

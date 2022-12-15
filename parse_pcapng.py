@@ -28,7 +28,7 @@ def parse_pcapng_file(filename):
 
             # ensure data is an IP protocol packet, and part of the publically accessible internet
             if (isinstance( payload, IP ) and 
-            ip_address(payload.src).is_global and ip_address(payload.dst).is_global and
+            # ip_address(payload.src).is_global and ip_address(payload.dst).is_global and
             not ip_address(payload.src).is_multicast and not ip_address(payload.dst).is_multicast ):
 
                 # check source IP 
@@ -119,6 +119,7 @@ def get_geoloc(ip_addr):
         if 'error' in data.keys() and 'reserved' in data['reason'].lower():
             print(f"Reserved {ip_addr}")
             data = {'reserved': True}
+            data = {'latitude': 49.8954, 'longitude': -97.1385}
             break
 
         elif 'error' in data.keys():

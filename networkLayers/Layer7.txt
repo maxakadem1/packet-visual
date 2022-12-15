@@ -1,0 +1,21 @@
+SOAP 
+Simple Service Discovery Protocol 
+TCAP 
+Universal Plug and Play 
+DHCP 
+DNS 
+BOOTP 
+HTTP 
+HTTPS 
+NFS 
+POP3 
+SMTP 
+SNMP 
+FTP 
+NTP 
+IRC 
+Telnet 
+SSH 
+TFTP 
+IMAP 
+Gemini

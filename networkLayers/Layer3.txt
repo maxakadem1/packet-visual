@@ -1,10 +1,10 @@
-CLNP
+CLNP 
 IPX 
 NAT 
-Routed-SMLT
+Routed-SMLT 
 SCCP 
-DDP
-HSRP 
+DDP 
+HSRP  
 VRRP 
 IP 
 ICMP 

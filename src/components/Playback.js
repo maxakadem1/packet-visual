@@ -2,7 +2,7 @@ import React from "react"
 import "./components.css"
 import { useState, useEffect } from "react"
 import { useRecoilState } from "recoil"
-import { isPlaybackDone, done, sendPacket, incomingPacket } from "./stores"
+import { isPlaybackDone, done, sendPacket, incomingPacket,  } from "./stores"
 
 export default function Playback({visible=true, dataUrl=null}){
 
@@ -11,32 +11,36 @@ export default function Playback({visible=true, dataUrl=null}){
   let totalTime = 0
   let times = []
   let currFrame = 0
+  let playRate = 250
+  let renderedPackets = 0
+  let maxRenderedPackets = 20
 
   // Set packet upper bound to 50
-  let maxPackets = 50
+  let maxPackets = 50000
 
   // Fetch JSON packet data
+  const fetchJSON = () => {
+    fetch(dataUrl)
+      .then ((response) => response.json())
+      .then ((data) => {
+        packets = Object.values(data)
+        packets = packets.slice(20, Math.min(packets.length, maxPackets+20))
   
-  fetch(dataUrl)
-    .then ((response) => response.json())
-    .then ((data) => {
-      packets = Object.values(data)
-      packets = packets.slice(20, Math.min(packets.length, maxPackets+20))
-
-      // Get time intervals
-      let start = parseFloat(packets[0]["timestamp"])
-
-      let timestamps = packets.map(p => parseFloat(p["timestamp"]))
-      for (let t of timestamps) {
-        let diff = Math.round((t-start)*1000)
-        times.push(diff)
-      }
-      
-      totalTime = times[times.length-1]+100
-    })
-    .catch (function() {
-      console.error(`Error retrieving data from ${dataUrl}`);
-    })
+        // Get time intervals
+        let start = parseFloat(packets[0]["timestamp"])
+  
+        let timestamps = packets.map(p => parseFloat(p["timestamp"]))
+        for (let t of timestamps) {
+          let diff = Math.round((t-start)*1000)
+          times.push(diff)
+        }
+        
+        totalTime = times[times.length-1]+100
+      })
+      .catch (function() {
+        console.error(`Error retrieving data from ${dataUrl}`);
+      })
+  }
   
   const [time, setTime] = useState("00:00:00:00")
   const [done, setDone] = useRecoilState(isPlaybackDone)
@@ -68,6 +72,8 @@ export default function Playback({visible=true, dataUrl=null}){
    *    Run the Playback component from the beginning on button click
    */
   const play = () => {
+    end()
+    fetchJSON()
     // Hide graphs when replaying
     setPlaybackDone(false)
 
@@ -75,12 +81,23 @@ export default function Playback({visible=true, dataUrl=null}){
     let pid = setInterval(loadContent, 100)
     function loadContent() {
       if (playTime < totalTime){
-        if(playTime >= times[currFrame]){
+        renderedPackets = 0
+        while(playTime >= times[currFrame]){
           setThePacket(packets[currFrame])
           currFrame++
+          renderedPackets++
+
+          if (renderedPackets >= maxRenderedPackets) {
+            break
+          }
+        }
+        if (renderedPackets >= maxRenderedPackets) {
+          playTime = times[currFrame-1]
+        }
+        else {
+          playTime = Math.min(playTime+playRate, times[currFrame])
         }
         
-        playTime += 100
         setTime(formatTime(playTime))
       }
       else {
@@ -109,9 +126,11 @@ export default function Playback({visible=true, dataUrl=null}){
    */
   function end(){
     setPlaybackDone(true)
+    packets = []
+    times = []
     playTime = 0
     totalTime = 0
-    currFrame = -1
+    currFrame = 0
     setTime("00:00:00:00 - ANIMATION COMPLETE")
   }
 

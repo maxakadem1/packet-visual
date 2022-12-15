@@ -16,7 +16,7 @@ export default function Overlays() {
   return (
     <div id="overlays">
       <FileMenu />
-      <GraphView showGraphs={playbackDone} />
+      {/* <GraphView showGraphs={playbackDone} /> */}
       <Playback visible={fileLoaded} dataUrl={dataFileURL} />
     </div>
   );

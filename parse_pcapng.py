@@ -19,11 +19,10 @@ from time import sleep
 def parse_pcapng_file(filename):
     ip_locations = {}
     reserved_addresses = []
-    file_to_open = os.path.join("public","data",filename) + ".pcapng"
-    print("Parasing " + file_to_open)
+    print(f"Parsing {filename}")
     output = {}
     current_id = 0
-    for block in pcapng.FileScanner( open( file_to_open, 'rb' ) ):
+    for block in pcapng.FileScanner( open( filename, 'rb' ) ):
         if isinstance( block, pcapng.blocks.EnhancedPacket ):
             payload = Ether(block.packet_data).payload
 
@@ -72,9 +71,10 @@ def parse_pcapng_file(filename):
                     }
                     current_id += 1
 
-    with open('public/data/' + filename.strip('.pcapng') + '.json', 'w') as outfile:
+    with open(filename.replace('.pcapng', '.json'), 'w') as outfile:
         json.dump(output, outfile)
-        return 'public/data/' + filename.strip('.pcapng') + '.json'
+        print(f"Completed parsing on {filename}")
+        return 'public/data/' + filename.replace('.pcapng', '.json')
 
 
 # helper function to get geolocations from IP addresses

@@ -15,32 +15,8 @@ export default function Playback({visible=true, dataUrl=null}){
   let renderedPackets = 0
   let maxRenderedPackets = 20
 
-  // Set packet upper bound to 50
+  // Set packet upper bound 
   let maxPackets = 1000
-
-  // Fetch JSON packet data
-  const fetchJSON = () => {
-    fetch(dataUrl)
-      .then ((response) => response.json())
-      .then ((data) => {
-        packets = Object.values(data)
-        packets = packets.slice(0, Math.min(packets.length, maxPackets))
-  
-        // Get time intervals
-        let start = parseFloat(packets[0]["timestamp"])
-  
-        let timestamps = packets.map(p => parseFloat(p["timestamp"]))
-        for (let t of timestamps) {
-          let diff = Math.round((t-start)*1000)
-          times.push(diff)
-        }
-        
-        totalTime = times[times.length-1]+100
-      })
-      .catch (function() {
-        console.error(`Error retrieving data from ${dataUrl}`);
-      })
-  }
   
   const [time, setTime] = useState("00:00:00:00")
   const [done, setDone] = useRecoilState(isPlaybackDone)
@@ -71,13 +47,42 @@ export default function Playback({visible=true, dataUrl=null}){
   /* play
    *    Run the Playback component from the beginning on button click
    */
-  const play = () => {
+  const play = async () => {
     end()
-    fetchJSON()
+
+      // Fetch JSON packet data
+    let fetchJSON = new Promise(function(resolve) {
+      fetch(dataUrl)
+        .then ((response) => response.json())
+        .then ((data) => {
+          packets = Object.values(data)
+          packets = packets.slice(0, Math.min(packets.length, maxPackets))
+    
+          // Get time intervals
+          let start = parseFloat(packets[0]["timestamp"])
+    
+          let timestamps = packets.map(p => parseFloat(p["timestamp"]))
+          for (let t of timestamps) {
+            let diff = Math.round((t-start)*1000)
+            times.push(diff)
+          }
+          
+          totalTime = times[times.length-1]+100
+          console.log("Finished FETCH")
+          resolve("Success!")
+        })
+        .catch (function() {
+          console.error(`Error retrieving data from ${dataUrl}`);
+          resolve("Error")
+      })
+    })
+
+    await fetchJSON
     // Hide graphs when replaying
     setPlaybackDone(false)
 
     // Load packet time intervals
+    console.log("Loading packet data...")
     let pid = setInterval(loadContent, 100)
     function loadContent() {
       if (playTime < totalTime){

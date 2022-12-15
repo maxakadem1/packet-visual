@@ -26,11 +26,13 @@ class userData(Resource):
         path =  os.path.join("public", "data",userID)
         fileName = path + ".json"
         try:
+            print(fileName)
             with open(fileName, 'r') as file:
                 data = json.load(file)
         except:
             print(traceback.format_exc())
             return {"Reading error"},500
+
         return jsonify(data)
     
     #Generate a uuid for a user which is then used to access that users pcab file
@@ -47,7 +49,7 @@ class userData(Resource):
             return {"error": "file error"}, 404
 
         try:
-            fileName = parse_pcapng.parse_pcapng_file(userID)
+            fileName = parse_pcapng.parse_pcapng_file(fileName)
         except Exception:
             print(traceback.format_exc())
             return {"Parsing error"},error
@@ -150,8 +152,8 @@ class anaylyzeProtocols(Resource):
 
 api.add_resource(homePage, '/')
 api.add_resource(userData, '/userData')
-api.add_resource(anaylyzeLayers, '/analyzeLayers')
-api.add_resource(anaylyzeProtocols, '/anaylyzeProtocols')
+# api.add_resource(anaylyzeLayers, '/analyzeLayers')
+# api.add_resource(anaylyzeProtocols, '/anaylyzeProtocols')
 
 if __name__ == '__main__':
     

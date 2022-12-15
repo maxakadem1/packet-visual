@@ -1,5 +1,16 @@
 import { atom, selector } from 'recoil';
 
+// setUsername: Store user to file uuid
+const setUsername = atom({
+  key: 'setUsername',
+  default: '',
+});
+const username = selector({
+  key: 'username',
+  get: ({ get }) => get(setUsername),
+});
+
+
 // isFileLoaded: Check if file load is successful
 const isFileLoaded = atom({
   key: 'isFileLoaded',
@@ -44,6 +55,7 @@ const incomingPacket = selector({
 
 
 export { 
+    setUsername, username,
     isFileLoaded, loaded,
     setPacketDataFile, pData,
     isPlaybackDone, done,

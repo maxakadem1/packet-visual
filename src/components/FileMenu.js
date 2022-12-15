@@ -3,10 +3,16 @@ import "./components.css";
 import { useState } from "react"
 import Form from 'react-bootstrap/Form';
 import { useRecoilState } from "recoil"
-import { isFileLoaded, loaded, setPacketDataFile, pData } from "./stores"
+import { isFileLoaded, loaded, setPacketDataFile, pData, setUsername, username } from "./stores"
 
 export default function FileMenu() {
 
+  /* setUsername
+   *    Store user ID
+   */
+  const [username, setUID] = useRecoilState(setUsername)
+  const setUser = (id) => { setUID(id) }
+  
   /* setFileLoadSuccess
    *    Notify application if file load is successful
    */
@@ -51,6 +57,7 @@ export default function FileMenu() {
                 retURL = retURL.replaceAll('"','')
                 console.log(retURL)
                 setPacketFile(`/userData?userId=${retURL}.pcapng`)
+                setUser(retURL)
                 //setPacketFile(`/userData`)
               })();
             } 
@@ -62,6 +69,7 @@ export default function FileMenu() {
       reader.readAsBinaryString(file)
     
   }
+}
 
   return (
     <div className={"uiOverlay fileMenu lateralFlex"}>
@@ -77,5 +85,5 @@ export default function FileMenu() {
       <p className="sideText">{statusText}</p>
     </div>
   );
-}
+
 }

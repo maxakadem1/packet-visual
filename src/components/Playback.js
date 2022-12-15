@@ -16,7 +16,7 @@ export default function Playback({visible=true, dataUrl=null}){
   let maxRenderedPackets = 20
 
   // Set packet upper bound to 50
-  let maxPackets = 50000
+  let maxPackets = 1000
 
   // Fetch JSON packet data
   const fetchJSON = () => {
@@ -24,7 +24,7 @@ export default function Playback({visible=true, dataUrl=null}){
       .then ((response) => response.json())
       .then ((data) => {
         packets = Object.values(data)
-        packets = packets.slice(20, Math.min(packets.length, maxPackets+20))
+        packets = packets.slice(0, Math.min(packets.length, maxPackets))
   
         // Get time intervals
         let start = parseFloat(packets[0]["timestamp"])

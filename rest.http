@@ -1,4 +1,4 @@
-GET http://127.0.0.1:5000/userData
+GET http://127.0.0.1:5000/userData?userId=cool-data
 
 ###
 

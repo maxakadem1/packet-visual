@@ -22,10 +22,14 @@ class userData(Resource):
     #If No errors return the json back to the user otherwise send error 404 message
     def get(self):
         data = "" 
+        userID = request.args.get('userId')
+        path =  os.path.join("public", "data",userID)
+        fileName = path + ".json"
         try:
             with open(fileName, 'r') as file:
                 data = json.load(file)
         except:
+            print(traceback.format_exc())
             return {"Reading error"},500
         return jsonify(data)
     
@@ -35,7 +39,7 @@ class userData(Resource):
         error = 404
         userID = str(uuid.uuid4())
         dataFolder = os.path.join("public", "data")
-        fileName = os.path.join(dataFolder,userID) + ".pcapng"
+        fileName = os.path.join(dataFolder, userID) + ".pcapng"
         try:
             with open(fileName,"wb") as pcab:
                 pcab.write(request.data)
@@ -43,7 +47,7 @@ class userData(Resource):
             return {"error": "file error"}, 404
 
         try:
-            fileName = parse_pcapng.parse_pcapng_file(userID + ".pcapng")
+            fileName = parse_pcapng.parse_pcapng_file(userID)
         except Exception:
             print(traceback.format_exc())
             return {"Parsing error"},error

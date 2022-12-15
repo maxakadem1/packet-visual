@@ -19,7 +19,8 @@ from time import sleep
 def parse_pcapng_file(filename):
     ip_locations = {}
     reserved_addresses = []
-    file_to_open = os.path.join("public","data",filename)
+    file_to_open = os.path.join("public","data",filename) + ".pcapng"
+    print("Parasing " + file_to_open)
     output = {}
     current_id = 0
     for block in pcapng.FileScanner( open( file_to_open, 'rb' ) ):

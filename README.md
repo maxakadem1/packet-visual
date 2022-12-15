@@ -17,10 +17,12 @@
 - Backend
   - Python Flask
   - RESTFUL
-  - Werkzeug
   - UUID
   - Scapy
   - python-pcapng
+  - matplotlib
+  - json
+  - traceback
 
 ---
 

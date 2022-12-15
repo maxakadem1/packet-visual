@@ -2,7 +2,7 @@ import React from "react"
 import "./components.css"
 import { useState, useEffect } from "react"
 import { useRecoilState } from "recoil"
-import { isPlaybackDone, done, sendPacket, incomingPacket,  } from "./stores"
+import { isPlaybackDone, done, sendPacket, incomingPacket, runningPID, changePID, } from "./stores"
 
 export default function Playback({visible=true, dataUrl=null}){
 
@@ -16,15 +16,18 @@ export default function Playback({visible=true, dataUrl=null}){
   let maxRenderedPackets = 20
 
   // Set packet upper bound 
-  let maxPackets = 1000
+  let maxPackets = 5000
   
   const [time, setTime] = useState("00:00:00:00")
   const [done, setDone] = useRecoilState(isPlaybackDone)
+  const [changePID, setPID] = useRecoilState(runningPID)
   /* setPlaybackDone
-   *    Notify application if playback is finished (true) or starting (false)
-   *    @params: Boolean
-   */
-  const setPlaybackDone = (bool) => { setDone(bool) }
+  *    Notify application if playback is finished (true) or starting (false)
+  *    @params: Boolean
+  */
+ const setPlaybackDone = (bool) => { setDone(bool) }
+ 
+ const setRunningPID = (pid) => { setPID(pid) }
 
 
   const [incomingPacket, setPacket] = useRecoilState(sendPacket)
@@ -48,7 +51,13 @@ export default function Playback({visible=true, dataUrl=null}){
    *    Run the Playback component from the beginning on button click
    */
   const play = async () => {
+    setPlaybackDone(true)
     end()
+
+    if (changePID !== -1) {
+      clearInterval(changePID)
+      setRunningPID(-1)
+    }
 
       // Fetch JSON packet data
     let fetchJSON = new Promise(function(resolve) {
@@ -68,7 +77,6 @@ export default function Playback({visible=true, dataUrl=null}){
           }
           
           totalTime = times[times.length-1]+100
-          console.log("Finished FETCH")
           resolve("Success!")
         })
         .catch (function() {
@@ -82,8 +90,7 @@ export default function Playback({visible=true, dataUrl=null}){
     setPlaybackDone(false)
 
     // Load packet time intervals
-    console.log("Loading packet data...")
-    let pid = setInterval(loadContent, 100)
+    setRunningPID(setInterval(loadContent, 100))
     function loadContent() {
       if (playTime < totalTime){
         renderedPackets = 0
@@ -107,7 +114,6 @@ export default function Playback({visible=true, dataUrl=null}){
       }
       else {
         end()
-        clearInterval(pid)
       }
     }
   }
@@ -136,7 +142,7 @@ export default function Playback({visible=true, dataUrl=null}){
     playTime = 0
     totalTime = 0
     currFrame = 0
-    setTime("00:00:00:00 - ANIMATION COMPLETE")
+    setTime("00:00:00:00")
   }
 
   return (

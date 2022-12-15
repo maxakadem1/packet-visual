@@ -17,7 +17,7 @@ export default function FileMenu() {
    *    Notify application if file load is successful
    */
   const [loaded, setLoaded] = useRecoilState(isFileLoaded)
-  const setFileLoadSuccess = () => { setLoaded(true) }
+  const setFileLoadSuccess = (newValue) => { setLoaded(newValue) }
 
   // Text to be shown in FileMenu bar
   const[statusText, changeStatus] = useState("No file uploaded")
@@ -29,17 +29,9 @@ export default function FileMenu() {
   const [pData, setPacketFile] = useRecoilState(setPacketDataFile)
   const loadFile = (e) => {
     const file = e.target.files[0]
-    if (file){
-      let fn = file.name
-      let extension = fn.split('.').pop()
-      if(extension == "pcapng"){
-        setFileLoadSuccess()
-        changeStatus("READY → " + fn)
-      }
-      else {
-        alert("Invalid file. Packet Visual only accepts .pcapng files.")
-        changeStatus("File load failed. Please try a new file.")
-      }
+    let fn = file.name
+    changeStatus("Uploading and parsing " + fn + "...")
+    setFileLoadSuccess(false)
 
     // Upload file to server to be parsed
     const reader = new FileReader();
@@ -58,6 +50,18 @@ export default function FileMenu() {
                 console.log(retURL)
                 setPacketFile(`/userData?userId=${retURL}`)
                 setUser(retURL)
+
+                if (file){
+                  let extension = fn.split('.').pop()
+                  if(extension == "pcapng"){
+                    setFileLoadSuccess(true)
+                    changeStatus("READY → " + fn)
+                  }
+                  else {
+                    alert("Invalid file. Packet Visual only accepts .pcapng files.")
+                    changeStatus("File load failed. Please try a new file.")
+                  }
+                }
               })();
             } 
             else {  
@@ -66,9 +70,8 @@ export default function FileMenu() {
           })
       }
       reader.readAsBinaryString(file)
-    
   }
-}
+
 
   return (
     <div className={"uiOverlay fileMenu lateralFlex"}>

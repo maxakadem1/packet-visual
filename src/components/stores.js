@@ -3,7 +3,7 @@ import { atom, selector } from 'recoil';
 // setUsername: Store user to file uuid
 const setUsername = atom({
   key: 'setUsername',
-  default: '',
+  default: 'UM_Center_Capture.json',
 });
 const username = selector({
   key: 'username',
@@ -24,7 +24,7 @@ const loaded = selector({
 // setPacketDataFile: Return the URL of the JSON parsed data from the .pcapng file
 const setPacketDataFile = atom({
   key: 'setPacketDataFile',
-  default: '/data/UM_Center_Capture.json', // Stub data file
+  default: '', // Stub data file
 });
 const pData = selector({
   key: 'pData',
@@ -53,11 +53,21 @@ const incomingPacket = selector({
   get: ({ get }) => get(sendPacket),
 });
 
+const runningPID = atom({
+  key: 'runningPID',
+  default: -1,
+});
+const changePID = selector({
+  key: 'changePID',
+  get: ({ get }) => get(runningPID),
+});
+
 
 export { 
     setUsername, username,
     isFileLoaded, loaded,
     setPacketDataFile, pData,
     isPlaybackDone, done,
-    sendPacket, incomingPacket
+    sendPacket, incomingPacket,
+    runningPID, changePID
 };

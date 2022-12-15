@@ -1,13 +1,11 @@
 from flask import Flask, jsonify, request, send_file
 from flask_restful import Resource, Api
-from werkzeug.utils import secure_filename
 import parse_pcapng
 import uuid
 import traceback
 import os
 import json
 import matplotlib.pyplot as plt
-import base64
 
 layers = {}
 # creating the flask app
@@ -25,12 +23,10 @@ class userData(Resource):
     def get(self):
 
         userID = request.args.get('userId')
-        print(userID)
         data = "" 
         error = 404
         try:
             fileName = parse_pcapng.parse_pcapng_file(userID)
-            print("parsed")
         except Exception:
             print(traceback.format_exc())
             return {"Parsing error"},error
@@ -68,8 +64,7 @@ class homePage(Resource):
             return {"error":"file error"},error
         return homePage
 
-#WORK IN PROGRESS
-class anaylyze(Resource):
+class anaylyzeLayers(Resource):
 
     def get(self):
         userID = request.args.get('userId')
@@ -85,7 +80,7 @@ class anaylyze(Resource):
         try:
             with open(fileName) as file:
                 data = json.load(file)
-
+                
                 for key in data.keys():
                     packet = data[key]
 
@@ -111,18 +106,49 @@ class anaylyze(Resource):
             print(traceback.format_exc())
             return {"Generating protocol graph error"},505
 
-        plotFileName = os.path.join("public","graphs",userID) + ".png"
+        plotFileName = os.path.join("public","graphs",userID) + "layers.png"
         plt.bar(osiModel,protoAnalysis.values(), linewidth=2.0)
         plt.xlabel("OSI Layer")
+        plt.ylabel("Packets sent from layer")
+        plt.savefig(plotFileName, bbox_inches='tight')
+        return send_file(plotFileName, mimetype="image")
+
+
+class anaylyzeProtocols(Resource):
+
+    def get(self):
+        userID = request.args.get('userId')
+        path = os.path.join("public", "data", userID)
+        fileName = path + ".json"
+
+        protocols = {}
+        try:
+            with open(fileName) as file:
+                data = json.load(file)
+
+                for key in data.keys():
+                    packet = data[key]
+
+                    protocol = packet["protocol"]
+                    if(protocol in protocols.keys()):
+                        protocols[protocol] +=1
+                    else:
+                        protocols[protocol] = 1
+        except Exception:
+            print(traceback.format_exc())
+            return {"Generating protocol graph error"}, 505
+        
+        plotFileName = os.path.join("public", "graphs", userID) + "protocols.png"
+        plt.bar(protocols.keys(), protocols.values(), linewidth=2.0)
+        plt.xlabel("Protocol")
         plt.ylabel("Packets sent from protocol")
         plt.savefig(plotFileName, bbox_inches='tight')
         return send_file(plotFileName, mimetype="image")
 
-        
-
 api.add_resource(homePage, '/')
 api.add_resource(userData, '/userData')
-api.add_resource(anaylyze, '/analyze')
+api.add_resource(anaylyzeLayers, '/analyzeLayers')
+api.add_resource(anaylyzeProtocols, '/anaylyzeProtocols')
 
 if __name__ == '__main__':
     

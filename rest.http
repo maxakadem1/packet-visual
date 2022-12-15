@@ -2,7 +2,11 @@ GET http://127.0.0.1:5000/userData
 
 ###
 
-GET http://127.0.0.1:5000/analyze?userId=cool-data
+GET http://127.0.0.1:5000/anaylyzeLayers?userId=cool-data
 Content-Type: image/png
+
+###
+
+GET http://127.0.0.1:5000/anaylyzeProtocols?userId=cool-data
 
 ###

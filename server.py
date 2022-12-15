@@ -21,16 +21,7 @@ class userData(Resource):
     #Given the users UUID parse the pcab file and turn it into a json
     #If No errors return the json back to the user otherwise send error 404 message
     def get(self):
-
-        userID = request.args.get('userId')
         data = "" 
-        error = 404
-        try:
-            fileName = parse_pcapng.parse_pcapng_file(userID)
-        except Exception:
-            print(traceback.format_exc())
-            return {"Parsing error"},error
-
         try:
             with open(fileName, 'r') as file:
                 data = json.load(file)
@@ -41,6 +32,7 @@ class userData(Resource):
     #Generate a uuid for a user which is then used to access that users pcab file
     #Send the uuid back to the user for them to save it when they later request the json of the pcab
     def post(self):
+        error = 404
         userID = str(uuid.uuid4())
         dataFolder = os.path.join("public", "data")
         fileName = os.path.join(dataFolder,userID) + ".pcapng"
@@ -49,6 +41,13 @@ class userData(Resource):
                 pcab.write(request.data)
         except:
             return {"error": "file error"}, 404
+
+        try:
+            fileName = parse_pcapng.parse_pcapng_file(userID + ".pcapng")
+        except Exception:
+            print(traceback.format_exc())
+            return {"Parsing error"},error
+
         return userID
 
 #Send the index file for the get request

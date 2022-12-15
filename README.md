@@ -14,7 +14,7 @@
   - Mapbox
   - DeckGL
   - Bootstrap
-- Backend
+- Backend:
   - Python Flask
   - RESTFUL
   - UUID
@@ -23,6 +23,8 @@
   - matplotlib
   - json
   - traceback
+- Testing:
+  - rest.http
 
 ---
 

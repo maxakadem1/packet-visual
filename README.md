@@ -1,5 +1,7 @@
 ## Wireshark Data Visualisation using React with Mapbox, DeckGL and Bootstrap
 
+![logo (2)](https://user-images.githubusercontent.com/63835313/211465737-5b7700bd-4542-4011-ae18-d9c05e43f89a.png)
+
 #### Contributors
 
 - Maxim Abdulkhalikov (Frontend)

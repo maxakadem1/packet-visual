@@ -1,4 +1,13 @@
-## Wireshark Data Visualisation using React with Mapbox, DeckGL and Bootstrap
+## Wireshark Data Visualisation using React with Mapbox, DeckGL, Bootstrap and Flask
+![Packet Visual Banner](/public/packet-visual-banner.png)
+
+**Packet Visual** is a data visualisation application for Wireshark. Its interface allows users to
+upload their own .pcapng files after exporting and saving a capture from Wireshark. Uploaded
+.pcapng files will be stored on the application, processed, parsed, and translated into a JSON
+file which contains key packet information. Packet Visual will play the packets, revealing source
+addresses over a time sequence and duration, as if executing network traffic in real-time. The
+application’s integration with a real world map using Mapbox and WebGL will connect packets
+from a geographic source to destination for an immersive visualisation experience.
 
 ![logo (2)](https://user-images.githubusercontent.com/63835313/211465737-5b7700bd-4542-4011-ae18-d9c05e43f89a.png)
 
@@ -13,6 +22,7 @@
 
 - Frontend:
   - React
+  - Recoil
   - Mapbox
   - DeckGL
   - Bootstrap
